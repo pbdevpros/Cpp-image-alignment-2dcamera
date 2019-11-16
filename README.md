@@ -1,13 +1,14 @@
 # Cpp-image-alignment-2dcamera
 C++ OpenCV project to align an object with a 2D camera based on image data
 
-# Building the Project
+### Building the Project
 To build this project, first clone the repo.
 '''
 mkdir build && cd build
 cmake ..
 make
 ./AlighImage
+'''
 
 ### Purpose
 The aim of the project is to read in images of an object and tell the user whether the camera is square with the object.
@@ -27,4 +28,4 @@ The intent of the program is to read in an image, process it, overlay lines over
 The input then will be image files and the output will be image files and CSVs.
 
 ### Implementation
-####TODO
+#### TODO

@@ -7,7 +7,7 @@ To build this project, first clone the repo.
 mkdir build && cd build
 cmake ..
 make
-./AlighImage
+./AlignImage
 ```
 
 ### Purpose
@@ -33,13 +33,13 @@ The input then will be image files and the output will be image files and CSVs.
 
 ### Implementation
 This project will fulfill it's requirements the following way:
-#### OOP 
+##### OOP 
 There will be several classes used, ImageData (for reading, cropping and writing the images), Logger (generic logger class to assist in debug), MessageQueue (to allow for concurrent programming) and ImageDataPtr (for memory management).
-### File IO
+##### File IO
 Input will be taken and parsed from a config file and output will be sent to a log file.
-### Memory Management
+##### Memory Management
 Each time an image is read in, memory from the heap will be allocated. When the image data is saved to a file, it will be destoryed.
-### MultiThreading
+##### MultiThreading
 The processing of the images will be split into several section,
 * Reading in the image
 * Finding the borders of the image
@@ -51,3 +51,6 @@ and allow for ease-of-debug and understanding.
 
 ### Class Structure
 See files in src/ for more info.
+
+##### User Configuration
+A .json file is used to read in user settings. This includes the file path for the log file and the path to the images.

@@ -1,0 +1,4 @@
+{
+    "log_path" : "/tmp/cppimagealignment",
+    "image_path" : "../images/"
+}

@@ -33,18 +33,19 @@ The input then will be image files and the output will be image files and CSVs.
 
 ### Implementation
 This project will fulfill it's requirements the following way:
-##### OOP 
+#### OOP 
 There will be several classes used, ImageData (for reading, cropping and writing the images), Logger (generic logger class to assist in debug), MessageQueue (to allow for concurrent programming) and ImageDataPtr (for memory management).
-##### File IO
+#### File IO
 Input will be taken and parsed from a config file and output will be sent to a log file.
-##### Memory Management
+#### Memory Management
 Each time an image is read in, memory from the heap will be allocated. When the image data is saved to a file, it will be destoryed.
-##### MultiThreading
+#### MultiThreading
 The processing of the images will be split into several section,
-* Reading in the image
-* Finding the borders of the image
-* Overlaying borders on the image
-* Saving the resulting image to the output folder
+* Reading in the image.
+* Finding the borders of the image.
+* Overlaying borders on the image.
+* Saving the resulting image to the output folder.
+
 Only 1 of each of these sections will be run at a time. Each seperate image in the folder will be read in a seperate thread,
 so by locking each thread until the previous thread has complete the next section, it will ensure a stable cycle of image processing
 and allow for ease-of-debug and understanding.
@@ -52,5 +53,5 @@ and allow for ease-of-debug and understanding.
 ### Class Structure
 See files in src/ for more info.
 
-##### User Configuration
+#### User Configuration
 A .json file is used to read in user settings. This includes the file path for the log file and the path to the images.

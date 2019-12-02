@@ -1,2 +1,6 @@
 build/*
 .vscode/*
+sources/*
+images/*
+output/*
+testImages/*

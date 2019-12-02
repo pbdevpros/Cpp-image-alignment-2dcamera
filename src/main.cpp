@@ -22,6 +22,7 @@ std::vector<std::string>  getFilenames(std::string path, std::string extension);
 Json::Value getUserConfig(std::string path);
 void ProcessImages(std::vector<std::shared_ptr<ProcessQueue>> que, ImageData data, std::string outputFolder);
 void Usage(std::string function);
+std::ofstream ifs;
 
 int main(int argc, char* argv[]) {
 
@@ -46,13 +47,12 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> imagesNames = getFilenames(imagesPath, extension);
 
     // initialize log path
-    std::ofstream ifs(logPath);
     if (!ifs.is_open()) {
         ifs.open(logPath);
     }
     Logger imageLog(true, AlignerLog);
 
-    // read in images, overlay a contour over the object in the image and get the co-ordinates of the corners of the image.
+    // read in images, overlay a contour over the object in the image, get the co-ordinates of the corners of the image and get the alignment.
     bool success = false;
     if (CONTINUOUS) {
        
@@ -158,7 +158,7 @@ void Usage(std::string function)
  */
 void AlignerLog(int level, std::string logstring)
 {
-    std::cout << __TIME__ << " LINE: " <<__LINE__ << " <" << level << "> " << logstring << std::endl;
+    ifs << __TIME__ << " LINE: " <<__LINE__ << " <" << level << "> " << logstring << std::endl;
 }
 
 /**

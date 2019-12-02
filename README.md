@@ -13,7 +13,7 @@ make
 ### Purpose
 The purpose of this tool will be to allow the user, through repeated use of the tool, to take an image of an object and until it aligns horizontally and vertically with the edges of a camera. 
 
-This is a known issue on producion lines where the accuracy of camera measurements depends on camera alignment.
+This is a known issue on production lines (particularly displays) where the accuracy of camera measurements depends on camera alignment.
 
 The aim of the project is to read in images of an object and tell the user whether the camera is square with the object.
 Conceptually, this is similar to a spirit-level, it will tell the user if an object is tilted to left, right, or up or down.
@@ -48,9 +48,9 @@ The processing of the images will be split into several section,
 
 Only 1 of each of these sections will be run at a time. Each seperate image in the folder will be read in a seperate thread,
 so by locking each thread until the previous thread has complete the next section, it will ensure a stable cycle of image processing
-and allow for ease-of-debug and understanding.
+and allow for ease-of-debug - and understanding.
 
-### Class Structure
+#### Class Structure
 See files in src/ for more info.
 
 #### User Configuration

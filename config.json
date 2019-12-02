@@ -1,4 +1,6 @@
 {
     "log_path" : "/tmp/cppimagealignment",
-    "image_path" : "../images/"
+    "image_path" : "../validationImages/",
+    "output_path" : "../output/", // output folder should be different to input folder
+    "image_extension" : "jpg" // extension of image files used (png, jgp supported) 
 }

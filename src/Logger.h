@@ -12,13 +12,13 @@
  * Generic logging class.
  * Log level and a log enable can be set by the user.
  * User must define the actual logging function for the class, either at initialization or later.
- * User must deine the logging level.
+ * User must define the logging level.
  */
 
 class Logger
 {
   public:
-    Logger();
+    Logger() {}
     Logger(bool isEnable) : _isEnable(isEnable) {}
     Logger(bool isEnable, void (*userLogger)(int, std::string)) : _isEnable(isEnable), _logger(userLogger) {}
 
@@ -34,5 +34,12 @@ class Logger
     int _level = std::numeric_limits<int>::max();
     
 };
+
+typedef enum {
+  ERROR = 0,
+  WARNING,
+  INFO,
+  DEBUG
+} LOG_LEVEL;
 
 #endif

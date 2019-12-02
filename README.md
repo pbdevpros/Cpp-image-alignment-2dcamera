@@ -12,7 +12,7 @@ make
 ```
 
 ### Purpose
-The purpose of this tool will be to allow the user, through repeated use of the tool, to take an image of an object and until it aligns horizontally and vertically with the edges of a camera. 
+The purpose of this tool will be to allow the user, through repeated use of the tool, to take an image of an object and move it until it aligns horizontally and vertically with the edges of a camera. 
 
 This is a known issue on production lines (particularly displays) where the accuracy of camera measurements depends on camera alignment.
 

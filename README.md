@@ -40,7 +40,7 @@ The input, then, will be image files and the output will be image files and the 
 ### Implementation
 This project will fulfill it's requirements the following way:
 #### OOP 
-There will be several classes used, ImageData (for reading, cropping and writing the images), Logger (generic logger class to assist in debug), MessageQueue (to allow for concurrent programming) and ImageDataPtr (for memory management).
+There will be several classes used, ImageData (for reading, cropping and writing the images), Logger (generic logger class to assist in debug), ProcessQueue (to allow for concurrent programming).
 #### File IO
 Input will be taken and parsed from a config file and output will be sent to a log file.
 #### Memory Management
@@ -49,7 +49,7 @@ The progression of each stage of the image processing will be controlled using s
 The processing of the images will be split into several section,
 * Reading in the image.
 * Finding the borders of the image.
-* Overlaying borders on the image.
+* Finding the corners and alignment of the image.
 * Saving the resulting image to the output folder.
 
 Only 1 of each of these sections will be run at a time. Each seperate image in the folder will be read in a seperate thread,

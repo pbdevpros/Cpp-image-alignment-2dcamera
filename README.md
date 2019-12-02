@@ -4,6 +4,7 @@ C++ OpenCV project to align an object with a 2D camera based on image data
 ### Building the Project
 To build this project, first clone the repo.
 ```bash
+mkdir output
 mkdir build && cd build
 cmake ..
 make

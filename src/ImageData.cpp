@@ -219,16 +219,42 @@ bool ImageData::findAlignment()
         return false;
     }
 
+    // find which corners are the topLeft and topRight
+    double h = image_.rows;
+    double w = image_.cols;
+    if ( h > w ) // image must be at 90 degress
+    {
+        double newWidth;
+        newWidth = h;
+        h = w;
+        w = newWidth;   
+    }
+
+    // Open CV takes the top-left corner of an image as origin (0,0)
+    int topLeft;
+    for (topLeft = 0; topLeft < corners_.size() ; ++topLeft )
+        if ( (corners_[topLeft].x < (w/2.0)) && (corners_[topLeft].y < (h/2.0)) ) break;
+
+    int topRight;
+    for (topRight = 0; topRight < corners_.size() ; ++topRight )
+        if ( (corners_[topRight].x > (w/2.0)) && (corners_[topRight].y < (h/2.0)) ) break;
+
+
+    int bottomLeft;
+    for (bottomLeft = 0; bottomLeft < corners_.size() ; ++bottomLeft )
+        if ( (corners_[bottomLeft].x < (w/2.0)) && (corners_[bottomLeft].y > (h/2.0)) ) break;
+
+    std::string msg = "topLeft " + std::to_string(topLeft) + ", topRight  " + std::to_string(topRight) + ", bottomLeft " + std::to_string(bottomLeft);
+    log_->log(INFO, msg);
+
     // calculate horizontal alignment using the top of the object
-    int topLeft = 0;
-    int topRight = 1;
     float adj = std::sqrt(std::pow(corners_[topRight].x - corners_[topLeft].x, 2));
     float hyp = std::sqrt(std::pow(corners_[topRight].x - corners_[topLeft].x, 2) + std::pow(corners_[topRight].y - corners_[topLeft].y, 2));
     h_alignment_ = std::acos(adj/hyp) * 180.0 / PI;
     log_->log(INFO, "Calculated the horizontal angle \t||| " + std::to_string(h_alignment_) + " (degrees)");
 
-    // calculate vertical alignment using the right of the object
-    int bottomLeft = 2;
+    // calculate vertical alignment using the left side of the object
+    bottomLeft = 2;
     float v_adj = std::sqrt(std::pow(corners_[topLeft].y - corners_[bottomLeft].y, 2));
     float v_hyp = std::sqrt(std::pow(corners_[topLeft].x - corners_[bottomLeft].x, 2) + std::pow(corners_[topLeft].y - corners_[bottomLeft].y, 2));
     v_alignment_ = std::acos(v_adj/v_hyp) * 180.0 / PI;

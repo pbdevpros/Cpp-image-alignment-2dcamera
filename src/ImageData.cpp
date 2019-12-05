@@ -258,7 +258,7 @@ bool ImageData::findAlignment()
     float v_adj = std::sqrt(std::pow(corners_[topLeft].y - corners_[bottomLeft].y, 2));
     float v_hyp = std::sqrt(std::pow(corners_[topLeft].x - corners_[bottomLeft].x, 2) + std::pow(corners_[topLeft].y - corners_[bottomLeft].y, 2));
     v_alignment_ = std::acos(v_adj/v_hyp) * 180.0 / PI;
-    log_->log(INFO, "Calculated the vertical angle \t||| " + std::to_string(v_alignment_) + " (degrees)");    
+    log_->log(INFO, "Calculated the vertical angle \t||| " + std::to_string(v_alignment_) + " (degrees)");
 
     return true;
 }
@@ -290,4 +290,40 @@ bool ImageData::displayImage(bool isOutputImage)
 
     success = true;
     return success;
+}
+
+/// @brief Save corner co-ordinates and alignment results to csv file.
+/// @param filepath Path to the new folder (can be relative or absolute)
+bool ImageData::saveData(std::string folderpath)
+{
+    std::ofstream ifs ;
+    
+    // rename output path
+    std::string output_path ;
+    auto idxSlash = filepath_.rfind("/");
+    if (idxSlash == std::string::npos) {
+        filepath_.insert(0, "/");
+        idxSlash = 0;
+    }
+    auto idx = filepath_.rfind(".");
+    if ( idx != std::string::npos) // append before the file extension 
+        output_path = filepath_.substr(idxSlash+1, (idx-(idxSlash+1))) + "_output.csv";
+    else
+        output_path = filepath_.substr(idxSlash+1, (filepath_.length())) + "_output.csv";
+    output_path = folderpath + output_path;
+
+    // open...
+    if ( !ifs.is_open() ) {
+        ifs.open(output_path);
+    }
+
+    // create csv headers & save
+    log_->log(INFO, "Saved data to the ifs");
+    ifs << "TopRight,TopRight,TopLeft,TopLeft,BottomRight,BottomRight,BottomLeft,BottomLeft,Horizontal Alignment,Vertical Alignment\n";
+    ifs << "x,y,x,y,x,y,x,y,,,\n";
+    ifs << std::to_string(corners_[0].x) << "," << std::to_string(corners_[0].y) << "," << std::to_string(corners_[1].x) << "," << std::to_string(corners_[1].y) << ",";
+    ifs << std::to_string(corners_[2].x) << "," << std::to_string(corners_[2].y) << "," << std::to_string(corners_[3].x) << "," << std::to_string(corners_[3].y) << "," << h_alignment_ << "," << v_alignment_ << "\n";
+
+    log_->log(INFO, "Saved data to path " + output_path);
+    return true;
 }

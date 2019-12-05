@@ -67,7 +67,9 @@ int main(int argc, char* argv[]) {
                 success = data.readImage();
                 success = data.findContours();
                 success = data.findCorners();
+                success = data.findAlignment();
                 success = data.saveImage(outputPath);
+                success = data.saveData(outputPath);
                 if (success == false) {
                     throw std::runtime_error ("Error, processing image failed.");
                 }
@@ -212,11 +214,12 @@ void ProcessImages(std::vector<std::shared_ptr<ProcessQueue>> que, ImageData dat
                     else break;
                     break;
             case 3: success = data.saveImage(outputFolder);
+                    if (success) success = data.saveData(outputFolder);
+                    else break;
                     break;
         }
         if (!success)
             throw std::runtime_error ("Error! Processing " + data.getFilename() + " failed.");
         que[i]->NotifyCompletion();
-
     }
 }

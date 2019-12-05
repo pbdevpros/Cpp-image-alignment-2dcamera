@@ -33,6 +33,7 @@ class ImageData
     bool readImage();
     bool readImage(std::string filepath);
     bool saveImage(std::string filepath);
+    bool saveData(std::string folderpath);
     bool findContours();
     bool findCorners();
     bool findAlignment();

@@ -60,18 +60,41 @@ int main(int argc, char* argv[]) {
         int newFiles = imagesNames.size();
         while ( newFiles != 0 ) {
 
+            // process files
             newFiles = 0;
-            for ( auto &imageName : imagesNames ) {
-                ImageData data(imagesPath + imageName);
-                data.setLogger(imageLog);
-                success = data.readImage();
-                success = data.findContours();
-                success = data.findCorners();
-                success = data.saveImage(outputPath);
-                if (success == false) {
-                    throw std::runtime_error ("Error, processing image failed.");
-                }
+            std::vector<std::thread> threads;
+            std::vector<std::shared_ptr<ProcessQueue>> que;
+
+            AlignerLog(INFO, "Launching image processing...");
+
+            for ( int i = 0 ; i < kPROCESS_STEPS ; ++i ) {
+                std::shared_ptr<ProcessQueue> p_step = std::make_shared<ProcessQueue> ();
+                que.emplace_back(p_step);
             }
+
+            if ( que.size() != kPROCESS_STEPS ) {
+                throw std::runtime_error ("Error! Creating que failed, size of que is incorrect");
+            }
+
+            for ( auto &imageName : imagesNames ) {
+                // start a thread for each image, processing each image in each thread
+                ImageData newImage(imagesPath + imageName);
+                newImage.setLogger(imageLog);
+                threads.emplace_back(std::thread (ProcessImages, que, std::move(newImage), outputPath));
+            }
+
+            if ( threads.size() != imagesNames.size() ) {
+                throw std::runtime_error ("Error! Number of threads created does not match the number of images being processed.");
+            }
+
+            for ( auto &imageThread : threads )
+                imageThread.join();
+
+            for ( int i = 0 ; i < que.size() ; ++i ) {
+                que[i].reset();
+            }
+
+            AlignerLog(INFO, "Processed images during the continuous loop. Finishing...");
 
             // wait - make sure all files desired are in folder
             AlignerLog(INFO, "Waiting for files in input folder...");
@@ -212,11 +235,12 @@ void ProcessImages(std::vector<std::shared_ptr<ProcessQueue>> que, ImageData dat
                     else break;
                     break;
             case 3: success = data.saveImage(outputFolder);
+                    if (success) success = data.saveData(outputFolder);
+                    else break;
                     break;
         }
         if (!success)
             throw std::runtime_error ("Error! Processing " + data.getFilename() + " failed.");
         que[i]->NotifyCompletion();
-
     }
 }

@@ -2,13 +2,14 @@
 C++ OpenCV project to align an object with a 2D camera based on image data
 
 ### Building the Project
-To build this project, first clone the repo.
+To build this project, first clone the repo (ensure the all sub-repositories are cloned), then:
 ```bash
 mkdir output
 mkdir build && cd build
 cmake ..
 make
 ./AlignImage -l
+\# check the output/ folder to see the alignment data and output image
 ```
 
 ### Purpose
@@ -23,26 +24,18 @@ An end-view or side-view of the object is needed, where the program will get the
 ### Overview
 At a high-level, the user will use this tool by taking an image with a camera, to create an image file (like a JPEG, or PNG). They will then place the file in a folder, and specify the folder in the config.json file of this program. By running the program, they will see if the object in the image lines up correctly with the camera. The degree to which the top and left edges of the object line up with the top and left edges of the camera will be given to the user.
 
-***In order to validate this***, there is are several image included in the ```validationImages/``` folder. Follow the build instructions, run the program and check the ```output/``` folder. The output image will show the contours and corners of the image. See the log file (the path is specified in the config.json) to read the horizontal and vertical anglular alignment.
-
-### Requirements
-This project is the Capstone submission for the Udacity nanodegree program, which requires several features:
-* Demonstates an understanding of C++ functions and control structures
-* File IO
-* Well design OOP incorporating abstraction, encapsulation and inheritance.
-* Use of proper memory management - references, RAII, move semantics and smart pointers.
-* Use of concurrent programming - mutlithreading is utilized safely through promises and futures, mutexes and locks.
+In order to validate, there is are several image included in the ```validationImages/``` folder. Follow the build instructions, run the program and check the ```output/``` folder. The output image will show the contours and corners of the image. See the log file (the path is specified in the config.json) to read the horizontal and vertical anglular alignment.
 
 ### Features & Usage
 The intent of the program is to read in an image, process it, overlay lines over the edges of an object and output the resulting image. It should also use the co-ordiniates of the top-left, top-right, bottom-left and bottom-right corners of the image to calculate the degree to which the respective planes differ in degrees.
 The input, then, will be image files and the output will be image files and the horizontal and vertical alignment (in degrees) printed in the log file.
 
 ### Implementation
-This project will fulfill it's requirements the following way:
+This project displays several useful features of C++, some of which are:
 #### OOP 
-There will be several classes used, ImageData (for reading, cropping and writing the images), Logger (generic logger class to assist in debug), ProcessQueue (to allow for concurrent programming).
+Several classes are used, ImageData (for reading, cropping and writing the images), Logger (generic logger class to assist in debug), ProcessQueue (to allow for concurrent programming).
 #### File IO
-Input will be taken and parsed from a config file and output will be sent to a log file.
+Input will be taken and parsed from a config file and output will be sent to a log file, useful measurement data is stored in an output csv file.
 #### Memory Management
 The progression of each stage of the image processing will be controlled using shared pointers, ensuring the deletion of the memory at the end of the program.
 #### MultiThreading
@@ -53,7 +46,7 @@ The processing of the images will be split into several section,
 * Saving the resulting image to the output folder.
 
 Only 1 of each of these sections will be run at a time. Each seperate image in the folder will be read in a seperate thread,
-so by locking each thread until the previous thread has complete the next section, it will ensure a stable cycle of image processing
+by locking each thread until the previous thread has completed the following section, it will ensure a stable cycle of image processing
 and allow for ease-of-debug - and understanding.
 
 #### Class Structure
